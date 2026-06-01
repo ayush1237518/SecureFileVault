@@ -33,5 +33,5 @@ A secure file storage web application that allows users to upload, encrypt, and 
 
 ---
 
-Open [http://localhost:5173](http://localhost:5173).
+Live now : https://filesecure1.netlify.app/
 
