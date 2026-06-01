@@ -27,7 +27,7 @@ A secure file storage web application that allows users to upload, encrypt, and 
 
 ## 🏗️ Tech Stack
 
-- Frontend: HTML, CSS, JavaScript, Tailwind/ React  
+- Frontend: HTML, CSS, JavaScript, Typescript/ React  
 - Backend: Supabase (Auth + Storage)  
 - Encryption: AES (CryptoJS / Web Crypto API)  
 
