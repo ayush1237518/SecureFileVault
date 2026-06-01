@@ -33,5 +33,4 @@ A secure file storage web application that allows users to upload, encrypt, and 
 
 ---
 
-Live now : https://filesecure1.netlify.app/
 
