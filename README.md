@@ -33,22 +33,5 @@ A secure file storage web application that allows users to upload, encrypt, and 
 
 ---
 
-## 📸 Screenshots
-
-### 🔑 Authentication Page
-
-![Login UI](./Screenshot%202026-06-01%20104837.png)
-
----
-
-### 📁 File Upload & Vault Dashboard
-
-![Vault UI](./Screenshot%202026-06-01%20105218.png)
-
----
-
-## 📂 Project Structure
-
-
 Open [http://localhost:5173](http://localhost:5173).
 
