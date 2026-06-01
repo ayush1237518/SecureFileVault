@@ -14,7 +14,29 @@
     <title>Secure File Vault</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div
+        id="boot-loader"
+        style="
+          min-height: 100svh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #09090b;
+          color: #a1a1aa;
+          font-family: system-ui, sans-serif;
+          font-size: 0.875rem;
+        "
+      >
+        Loading Secure File Vault…
+      </div>
+    </div>
+    <noscript>
+      <p style="padding: 2rem; font-family: system-ui, sans-serif">
+        JavaScript is required. Run <code>npm run dev</code> and open
+        <code>http://localhost:5173</code>.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

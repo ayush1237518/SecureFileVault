@@ -10,7 +10,7 @@ import { LoadingScreen } from '../components/ui/LoadingScreen'
 import { Logo } from '../components/ui/Logo'
 
 export function AuthPage() {
-  const { user, loading } = useAuth()
+  const { user, loading, connectionError } = useAuth()
   const navigate = useNavigate()
   const [mode, setMode] = useState<'login' | 'signup'>('login')
   const [email, setEmail] = useState('')
@@ -108,6 +108,15 @@ export function AuthPage() {
                 Create account
               </button>
             </div>
+
+            {connectionError && (
+              <div
+                className="mb-4 rounded-xl border border-amber-500/30 bg-amber-950/30 px-4 py-3 text-sm text-amber-100"
+                role="alert"
+              >
+                {connectionError}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
