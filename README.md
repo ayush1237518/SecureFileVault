@@ -1,41 +1,40 @@
-# Secure File Vault
+# 🔐 Secure File Vault
 
-Client-side encrypted file storage built with React, Tailwind CSS, and Supabase.
+A secure file storage web application that allows users to upload, encrypt, and manage their files safely using strong encryption techniques.
 
-## Fix "Failed to fetch"
+---
 
-This error means the browser cannot reach your Supabase project. Common causes:
+## 🚀 Features
 
-1. **Placeholder `.env`** — Use your real Project URL and `anon` key (not `placeholder.supabase.co`).
-2. **Dev server not restarted** — After editing `.env`, stop and run `npm run dev` again.
-3. **Database not set up** — Run `supabase/schema.sql` in the Supabase SQL Editor.
-4. **Paused project** — Resume the project in the Supabase dashboard.
+- 🔒 Client-side Encryption (AES-256)
+- 🔑 Passphrase-based Security
+- 📁 Upload & Download Files
+- 🛡️ Secure Authentication (Gmail)
+- ☁️ Cloud Storage Integration (Supabase)
+- ⚡ Modern dark UI
 
-## Setup
+---
 
-### 1. Install
+## 🧠 How It Works
 
-```bash
-npm install
-```
+1. User uploads a file  
+2. User enters an encryption passphrase  
+3. File is encrypted in the browser  
+4. Encrypted file is stored securely  
+5. Same passphrase is required to decrypt  
 
-### 2. Supabase project
+---
 
-1. Create a project at [supabase.com](https://supabase.com).
-2. Copy **Project URL** and **anon public** key from **Settings → API**.
-3. Create `.env` from the example:
+## 🏗️ Tech Stack
 
-```bash
-cp .env.example .env
-```
+- Frontend: HTML, CSS, JavaScript, Typescript/ React  
+- Backend: Supabase (Auth + Storage)  
+- Encryption: AES (CryptoJS / Web Crypto API)  
 
-Edit `.env`:
+---
 
-```
-VITE_SUPABASE_URL=https://abcdefgh.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-```
 
+<<<<<<< HEAD
 ### 3. Database & storage
 
 In **SQL Editor**, paste and run `supabase/schema.sql`.
@@ -81,3 +80,5 @@ See **`docs/FRONTEND.md`** and **`.cursor/skills/frontend-ui/SKILL.md`** for UI 
 - Dashboard: list, search, download, delete
 - Row Level Security so users only see their own files
 # SecureFileVault
+=======
+>>>>>>> 09215532b1ff95afea32a4524e8ca48299562e51
