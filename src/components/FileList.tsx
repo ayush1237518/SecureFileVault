@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import type { VaultFile } from '../types/file'
 import { formatBytes, formatDate } from '../utils/format'
+import { IconFile } from './ui/Icons'
 
 type Props = {
   files: VaultFile[]
@@ -47,9 +48,14 @@ export function FileList({ files, loading, search, onDownload, onDelete }: Props
       </div>
 
       {filtered.length === 0 ? (
-        <p className="mt-8 text-center text-sm text-zinc-500">
-          {search ? 'No files match your search.' : 'No files yet. Upload your first encrypted file.'}
-        </p>
+        <div className="mt-10 flex flex-col items-center text-center">
+          <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white/5 ring-1 ring-white/10">
+            <IconFile className="text-zinc-500" />
+          </div>
+          <p className="mt-4 text-sm text-zinc-500">
+            {search ? 'No files match your search.' : 'No files yet. Upload your first encrypted file.'}
+          </p>
+        </div>
       ) : (
         <div className="mt-6 overflow-x-auto">
           <table className="w-full min-w-[520px] text-left text-sm">
@@ -64,7 +70,12 @@ export function FileList({ files, loading, search, onDownload, onDelete }: Props
             <tbody>
               {filtered.map((file) => (
                 <tr key={file.id} className="border-b border-white/5 last:border-0">
-                  <td className="py-3 pr-4 font-medium text-zinc-100">{file.file_name}</td>
+                  <td className="py-3 pr-4">
+                    <div className="flex items-center gap-2 font-medium text-zinc-100">
+                      <IconFile className="h-4 w-4 shrink-0 text-violet-400/70" />
+                      <span className="truncate">{file.file_name}</span>
+                    </div>
+                  </td>
                   <td className="py-3 pr-4 text-zinc-400">{formatBytes(file.file_size)}</td>
                   <td className="py-3 pr-4 text-zinc-400">{formatDate(file.created_at)}</td>
                   <td className="py-3 text-right">

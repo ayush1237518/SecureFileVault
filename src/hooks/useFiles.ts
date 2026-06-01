@@ -74,7 +74,9 @@ export function useFiles(userId: string | undefined) {
     if (error) throw new Error(mapSupabaseError(error))
     if (!data) throw new Error('No file data returned')
 
-    const decrypted = await decryptFile(data, passphrase, record.file_name)
+    const decrypted = await decryptFile(data, passphrase, record.file_name, {
+      expectedSize: record.file_size,
+    })
     const url = URL.createObjectURL(decrypted)
     const a = document.createElement('a')
     a.href = url

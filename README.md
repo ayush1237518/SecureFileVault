@@ -69,6 +69,10 @@ Set environment variables in the host dashboard:
 Build command: `npm run build`  
 Output directory: `dist`
 
+## Frontend
+
+See **`docs/FRONTEND.md`** and **`.cursor/skills/frontend-ui/SKILL.md`** for UI conventions and how to extend the design in Cursor.
+
 ## Features
 
 - Direct email/password sign-up and log-in (no email verification)

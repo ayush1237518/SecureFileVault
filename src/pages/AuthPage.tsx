@@ -4,8 +4,10 @@ import { toast } from 'react-hot-toast'
 import { getSupabase } from '../services/supabaseClient'
 import { mapSupabaseError } from '../services/supabaseConfig'
 import { useAuth } from '../hooks/useAuth'
+import { AppShell } from '../components/ui/AppShell'
 import { Container } from '../components/ui/Container'
 import { LoadingScreen } from '../components/ui/LoadingScreen'
+import { Logo } from '../components/ui/Logo'
 
 export function AuthPage() {
   const { user, loading } = useAuth()
@@ -43,7 +45,6 @@ export function AuthPage() {
           return
         }
 
-        // Fallback when Supabase still requires email confirm (should be disabled in dashboard)
         const { error: signInError } = await auth.signInWithPassword({ email, password })
         if (!signInError) {
           toast.success('Account created.')
@@ -52,7 +53,7 @@ export function AuthPage() {
         }
 
         toast.error(
-          'Account created but sign-in is blocked. In Supabase → Authentication → Email, turn OFF "Confirm email", then log in.',
+          'Turn OFF "Confirm email" in Supabase → Authentication → Email, then log in.',
           { duration: 8000 },
         )
         setMode('login')
@@ -73,19 +74,39 @@ export function AuthPage() {
   const isSignup = mode === 'signup'
 
   return (
-    <div className="min-h-[100svh] bg-zinc-950">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-900/20 via-zinc-950 to-zinc-950" />
+    <AppShell>
       <Container>
-        <div className="relative flex min-h-[100svh] items-center justify-center py-12">
+        <div className="flex min-h-[100svh] flex-col items-center justify-center py-10">
           <div className="card w-full max-w-md p-8">
-            <div className="mb-8 text-center">
-              <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-violet-500/15 ring-1 ring-violet-400/20">
-                <div className="h-5 w-5 rounded bg-violet-400/80" />
-              </div>
-              <h1 className="text-2xl font-semibold text-zinc-50">Secure File Vault</h1>
-              <p className="mt-2 text-sm text-zinc-400">
-                {isSignup ? 'Create an account — no email verification' : 'Log in to your vault'}
+            <div className="mb-8 flex flex-col items-center text-center">
+              <Logo size="md" />
+              <h1 className="page-title mt-5">Secure File Vault</h1>
+              <p className="mt-2 max-w-xs text-sm text-zinc-400">
+                {isSignup
+                  ? 'Create an account and start uploading encrypted files.'
+                  : 'Log in to access your private vault.'}
               </p>
+            </div>
+
+            <div className="mb-6 grid grid-cols-2 gap-1 rounded-xl bg-zinc-950/80 p-1 ring-1 ring-white/10">
+              <button
+                type="button"
+                className={`rounded-lg py-2 text-sm font-medium transition ${
+                  !isSignup ? 'bg-violet-500 text-white shadow' : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+                onClick={() => setMode('login')}
+              >
+                Log in
+              </button>
+              <button
+                type="button"
+                className={`rounded-lg py-2 text-sm font-medium transition ${
+                  isSignup ? 'bg-violet-500 text-white shadow' : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+                onClick={() => setMode('signup')}
+              >
+                Create account
+              </button>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -111,27 +132,16 @@ export function AuthPage() {
                   className="input"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="At least 6 characters"
                 />
               </div>
-              <button type="submit" disabled={submitting} className="btn-primary w-full">
+              <button type="submit" disabled={submitting} className="btn-primary w-full py-2.5">
                 {submitting ? 'Please wait…' : isSignup ? 'Create account' : 'Log in'}
               </button>
             </form>
-
-            <p className="mt-6 text-center text-sm text-zinc-400">
-              {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
-              <button
-                type="button"
-                className="font-medium text-violet-400 hover:text-violet-300"
-                onClick={() => setMode(isSignup ? 'login' : 'signup')}
-              >
-                {isSignup ? 'Log in' : 'Create account'}
-              </button>
-            </p>
           </div>
         </div>
       </Container>
-    </div>
+    </AppShell>
   )
 }

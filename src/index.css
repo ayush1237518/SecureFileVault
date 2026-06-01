@@ -19,7 +19,11 @@
 
 @layer components {
   .card {
-    @apply rounded-2xl border border-white/10 bg-white/5 shadow-lg shadow-black/30 backdrop-blur;
+    @apply rounded-2xl border border-white/10 bg-zinc-900/40 shadow-xl shadow-black/40 backdrop-blur-md;
+  }
+
+  .page-title {
+    @apply text-2xl font-semibold tracking-tight text-zinc-50 sm:text-3xl;
   }
 
   .btn {

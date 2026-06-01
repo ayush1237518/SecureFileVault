@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { toast } from 'react-hot-toast'
 import { MAX_FILE_SIZE } from '../hooks/useFiles'
+import { IconUpload } from './ui/Icons'
 
 type Props = {
   onUpload: (file: File, passphrase: string, onProgress: (pct: number) => void) => Promise<void>
@@ -75,6 +76,7 @@ export function FileUpload({ onUpload }: Props) {
         } ${uploading ? 'pointer-events-none opacity-60' : ''}`}
       >
         <input {...getInputProps()} />
+        <IconUpload className="mx-auto mb-3 text-violet-400/80" />
         <p className="text-sm text-zinc-300">
           {isDragActive ? 'Drop the file here…' : 'Drag & drop a file here, or click to browse'}
         </p>
