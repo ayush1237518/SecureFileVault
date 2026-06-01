@@ -12,6 +12,7 @@ A secure file storage web application that encrypts files in the browser before 
 npm install
 ```
 
+<<<<<<< HEAD
 4. Copy `env.example.txt` to `.env` and add your Supabase URL and anon key.
 5. Start the app:
 
@@ -40,9 +41,34 @@ If the phone cannot connect, allow port **5173** through Windows Firewall for No
 4. Put API credentials in `.env` and restart `npm run dev`.
 
 See `supabase/AUTH_SETUP.md` for details.
+=======
+---
 
-## Deploy (Vercel / Netlify)
+## 🧠 How It Works
 
+1. User uploads a file  
+2. User enters an encryption passphrase  
+3. File is encrypted in the browser  
+4. Encrypted file is stored securely  
+5. Same passphrase is required to decrypt  
+
+---
+
+## 🏗️ Tech Stack
+
+- Frontend: HTML, CSS, JavaScript, Typescript/ React  
+- Backend: Supabase (Auth + Storage)  
+- Encryption: AES (CryptoJS / Web Crypto API)
+
+
+---
+
+
+Open [http://localhost:5173](http://localhost:5173).
+>>>>>>> 28bc186e362cbcd6cba72bfab04e2715ac7a5d8d
+
+
+<<<<<<< HEAD
 Set environment variables:
 
 - `VITE_SUPABASE_URL`
@@ -57,3 +83,5 @@ Output: `dist`
 - Client-side AES encryption before upload
 - Drag & drop upload (10 MB max)
 - Dashboard: list, search, download, delete
+=======
+>>>>>>> 28bc186e362cbcd6cba72bfab04e2715ac7a5d8d
