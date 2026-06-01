@@ -9,7 +9,7 @@ A secure file storage web application that allows users to upload, encrypt, and 
 - 🔒 Client-side Encryption (AES-256)
 - 🔑 Passphrase-based Security
 - 📁 Upload & Download Files
-- 🛡️ Secure Authentication (Google/GitHub login)
+- 🛡️ Secure Authentication (Gmail)
 - ☁️ Cloud Storage Integration (Supabase)
 - ⚡ Modern dark UI
 
