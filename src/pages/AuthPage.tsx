@@ -8,6 +8,7 @@ import { AppShell } from '../components/ui/AppShell'
 import { Container } from '../components/ui/Container'
 import { LoadingScreen } from '../components/ui/LoadingScreen'
 import { Logo } from '../components/ui/Logo'
+import { OAuthButtons } from '../components/OAuthButtons'
 
 export function AuthPage() {
   const { user, loading, connectionError } = useAuth()
@@ -117,6 +118,17 @@ export function AuthPage() {
                 {connectionError}
               </div>
             )}
+
+            <OAuthButtons mode={mode} disabled={submitting} />
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center" aria-hidden>
+                <div className="w-full border-t border-white/10" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase tracking-wide">
+                <span className="bg-zinc-900/40 px-3 text-zinc-500">or use email</span>
+              </div>
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

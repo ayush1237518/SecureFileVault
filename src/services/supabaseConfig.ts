@@ -53,5 +53,14 @@ export function mapSupabaseError(error: unknown): string {
     }
     return 'Cannot reach Supabase. Check your URL/key in .env, internet connection, and that the project is not paused.'
   }
+
+  const lower = message.toLowerCase()
+  if (lower.includes('provider') && (lower.includes('not enabled') || lower.includes('disabled'))) {
+    return 'This sign-in provider is not enabled in Supabase. Enable Google or GitHub under Authentication → Providers.'
+  }
+  if (lower.includes('redirect') && lower.includes('url')) {
+    return 'Redirect URL not allowed. Add your app URL (e.g. http://localhost:5173/auth/callback) in Supabase → Authentication → URL Configuration.'
+  }
+
   return message
 }

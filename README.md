@@ -38,9 +38,11 @@ If the phone cannot connect, allow port **5173** through Windows Firewall for No
 1. Create a project at [supabase.com/dashboard](https://supabase.com/dashboard).
 2. **SQL Editor** → run `supabase/schema.sql`.
 3. **Authentication → Email** → enable; turn **off** “Confirm email” for instant login.
-4. Put API credentials in `.env` and restart `npm run dev`.
+4. Enable **Google** and **GitHub** under **Authentication → Providers** (see `supabase/AUTH_SETUP.md`).
+5. Add redirect URL `http://localhost:5173/auth/callback` under **URL Configuration**.
+6. Put API credentials in `.env` and restart `npm run dev`.
 
-See `supabase/AUTH_SETUP.md` for details.
+See `supabase/AUTH_SETUP.md` for OAuth client IDs and redirect URLs.
 =======
 ---
 
@@ -79,7 +81,7 @@ Output: `dist`
 
 ## Features
 
-- Email/password sign-up and log-in
+- Sign up / log in with **email**, **Google**, or **GitHub**
 - Client-side AES encryption before upload
 - Drag & drop upload (10 MB max)
 - Dashboard: list, search, download, delete
