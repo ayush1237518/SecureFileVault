@@ -2,6 +2,7 @@
 
 A secure file storage web application that encrypts files in the browser before upload (AES), with Supabase for auth and storage.
 
+<<<<<<< HEAD
 ## Run on your PC
 
 1. Install [Node.js](https://nodejs.org/) (LTS).
@@ -45,6 +46,8 @@ If the phone cannot connect, allow port **5173** through Windows Firewall for No
 See `supabase/AUTH_SETUP.md` for OAuth client IDs and redirect URLs.
 =======
 ---
+=======
+>>>>>>> 178eb4f42370c746dbb8f98c5faaa56f31a2ca76
 
 ## 🧠 How It Works
 
@@ -62,22 +65,7 @@ See `supabase/AUTH_SETUP.md` for OAuth client IDs and redirect URLs.
 - Backend: Supabase (Auth + Storage)  
 - Encryption: AES (CryptoJS / Web Crypto API)
 
-
 ---
-
-
-Open [http://localhost:5173](http://localhost:5173).
->>>>>>> 28bc186e362cbcd6cba72bfab04e2715ac7a5d8d
-
-
-<<<<<<< HEAD
-Set environment variables:
-
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
-
-Build: `npm run build`  
-Output: `dist`
 
 ## Features
 
@@ -85,5 +73,8 @@ Output: `dist`
 - Client-side AES encryption before upload
 - Drag & drop upload (10 MB max)
 - Dashboard: list, search, download, delete
-=======
->>>>>>> 28bc186e362cbcd6cba72bfab04e2715ac7a5d8d
+
+
+## Live Demo: https://filesecure1.netlify.app/
+
+
