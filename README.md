@@ -2,7 +2,6 @@
 
 A secure file storage web application that encrypts files in the browser before upload (AES), with Supabase for auth and storage.
 
-<<<<<<< HEAD
 ## Run on your PC
 
 1. Install [Node.js](https://nodejs.org/) (LTS).
@@ -13,7 +12,6 @@ A secure file storage web application that encrypts files in the browser before 
 npm install
 ```
 
-<<<<<<< HEAD
 4. Copy `env.example.txt` to `.env` and add your Supabase URL and anon key.
 5. Start the app:
 
@@ -25,56 +23,36 @@ npm run dev
 
 Do **not** double-click `index.html` — the app must run through the dev server.
 
-## Run on your phone (same Wi‑Fi)
-
-1. Start `npm run dev` on your PC.
-2. In the terminal, find the **Network** line, e.g. `http://192.168.1.12:5173`.
-3. On your phone, open that URL in Chrome/Safari.
-4. Do **not** use `localhost` on the phone — that points to the phone itself.
-
-If the phone cannot connect, allow port **5173** through Windows Firewall for Node.js.
-
 ## Supabase setup
 
 1. Create a project at [supabase.com/dashboard](https://supabase.com/dashboard).
 2. **SQL Editor** → run `supabase/schema.sql`.
-3. **Authentication → Email** → enable; turn **off** “Confirm email” for instant login.
-4. Enable **Google** and **GitHub** under **Authentication → Providers** (see `supabase/AUTH_SETUP.md`).
-5. Add redirect URL `http://localhost:5173/auth/callback` under **URL Configuration**.
-6. Put API credentials in `.env` and restart `npm run dev`.
+3. **Authentication → Providers → Email** → enable; turn **off** “Confirm email” for instant login.
+4. Put API credentials in `.env` and restart `npm run dev`.
 
-See `supabase/AUTH_SETUP.md` for OAuth client IDs and redirect URLs.
-=======
----
-=======
->>>>>>> 178eb4f42370c746dbb8f98c5faaa56f31a2ca76
+See `supabase/AUTH_SETUP.md` for details.
 
-## 🧠 How It Works
+## Deploy to Netlify
 
-1. User uploads a file  
-2. User enters an encryption passphrase  
-3. File is encrypted in the browser  
-4. Encrypted file is stored securely  
-5. Same passphrase is required to decrypt  
+See `docs/NETLIFY.md`. Live demo: **https://filesecure1.netlify.app/**
 
----
+## How it works
 
-## 🏗️ Tech Stack
-
-- Frontend: HTML, CSS, JavaScript, Typescript/ React  
-- Backend: Supabase (Auth + Storage)  
-- Encryption: AES (CryptoJS / Web Crypto API)
-
----
+1. User uploads a file
+2. User enters an encryption passphrase
+3. File is encrypted in the browser
+4. Encrypted file is stored in Supabase Storage
+5. Same passphrase is required to decrypt on download
 
 ## Features
 
-- Sign up / log in with **email**, **Google**, or **GitHub**
+- Sign up / log in with **email and password**
 - Client-side AES encryption before upload
 - Drag & drop upload (10 MB max)
-- Dashboard: list, search, download, delete
+- Dashboard: list, search, download, delete, activity log
 
+## Tech stack
 
-## Live Demo: https://filesecure1.netlify.app/
-
-
+- React, TypeScript, Vite, Tailwind CSS
+- Supabase (Auth + Storage)
+- AES encryption (CryptoJS)

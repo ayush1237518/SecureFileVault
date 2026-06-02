@@ -1,79 +1,23 @@
 # Authentication setup
 
-This app supports **email/password**, **Google**, and **GitHub** sign-in.
+This app uses **email and password** sign-in only (via Supabase).
 
 ## Email (password)
 
 1. [Supabase Dashboard](https://supabase.com/dashboard) → your project  
 2. **Authentication** → **Providers** → **Email**  
-3. Turn **OFF** → **Confirm email** (instant login after sign-up)  
-4. Save  
+3. Ensure **Email** is enabled  
+4. Turn **OFF** → **Confirm email** (instant login after sign-up)  
+5. Save  
 
-## URL configuration (required for OAuth)
+## Site URL (optional)
 
-1. **Authentication** → **URL Configuration**  
-2. **Site URL**: your app root, e.g. `http://localhost:5173`  
-3. **Redirect URLs** — add every URL you use:
+**Authentication** → **URL Configuration** → set **Site URL** to your app root, e.g.:
 
-```
-http://localhost:5173/auth/callback
-http://127.0.0.1:5173/auth/callback
-```
+- Local: `http://localhost:5173`
+- Production: `https://filesecure1.netlify.app`
 
-For **Netlify production** (`https://filesecure1.netlify.app`), also set:
-
-- **Site URL:** `https://filesecure1.netlify.app`
-- **Redirect URLs:**
-
-```
-https://filesecure1.netlify.app/auth/callback
-```
-
-For other production domains:
-
-```
-https://your-domain.com/auth/callback
-```
-
-For phone testing on Wi‑Fi, add your PC’s network URL, e.g.:
-
-```
-http://192.168.1.12:5173/auth/callback
-```
-
-## Google
-
-1. [Google Cloud Console](https://console.cloud.google.com/) → create or select a project  
-2. **APIs & Services** → **OAuth consent screen** — configure (External is fine for testing)  
-3. **Credentials** → **Create credentials** → **OAuth client ID** → **Web application**  
-4. **Authorized redirect URIs** — add your Supabase callback (from Supabase → Authentication → Providers → Google):
-
-   ```
-   https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback
-   ```
-
-5. Copy **Client ID** and **Client secret** into Supabase → **Authentication** → **Providers** → **Google** → Enable → paste → Save  
-
-## GitHub
-
-1. GitHub → **Settings** → **Developer settings** → **OAuth Apps** → **New OAuth App**  
-2. **Homepage URL**: `https://filesecure1.netlify.app` (and/or `http://localhost:5173` for local dev)  
-3. **Authorization callback URL** — same Supabase callback:
-
-   ```
-   https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback
-   ```
-
-4. Copy **Client ID** and generate **Client secret**  
-5. Supabase → **Authentication** → **Providers** → **GitHub** → Enable → paste → Save  
-
-## How OAuth works in the app
-
-1. User clicks **Continue with Google** or **Continue with GitHub** on `/auth`  
-2. Browser redirects to the provider, then back to `/auth/callback`  
-3. App completes the session and sends the user to `/dashboard`  
-
-Google/GitHub create an account automatically on first sign-in (same as sign-up).
+No OAuth callback URLs are required.
 
 ## Activity log
 
@@ -83,11 +27,6 @@ Run `supabase/activity.sql` in the SQL Editor (included at the end of `schema.sq
 
 | Problem | Fix |
 |--------|-----|
-| Redirect URL mismatch | Add exact callback URL in Supabase **Redirect URLs** |
-| Provider not enabled | Enable provider in Supabase and save credentials |
-| Works on PC, not phone | Add `http://YOUR_LAN_IP:5173/auth/callback` to Redirect URLs |
-| Stuck after Google/GitHub | Confirm **Site URL** matches how you open the app |
-| `localhost refused to connect` | Run `npm run dev`, keep it open during sign-in, open **http://localhost:5173** (not `index.html`). Set `VITE_APP_URL=http://localhost:5173` in `.env`. Add both redirect URLs above in Supabase. |
-| OAuth works on wrong port | Vite uses `strictPort: true` on **5173** — free that port or stop the other app using it |
-| Works locally, not on Netlify | Add `https://filesecure1.netlify.app/auth/callback` in Supabase redirect URLs. In Netlify → Environment variables, set only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` — **do not** set `VITE_APP_URL` to localhost. Redeploy after code updates. |
-| Netlify shows “redirects to localhost” | Remove `VITE_APP_URL=http://localhost:5173` from Netlify env vars and redeploy |
+| Sign-up works but cannot log in | Turn off **Confirm email** under Email provider |
+| Too many emails | Wait 1 hour (Supabase rate limit) or disable email confirmation |
+| Cannot reach Supabase | Check `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env` / Netlify env vars |

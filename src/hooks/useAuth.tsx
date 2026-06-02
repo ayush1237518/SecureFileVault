@@ -95,13 +95,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
       setSession(newSession ?? null)
 
       if (event === 'SIGNED_IN' && newSession?.user) {
-        const provider = newSession.user.app_metadata?.provider
-        if (provider === 'email' || !provider) {
-          const key = `login-logged-${newSession.user.id}`
-          if (!sessionStorage.getItem(key)) {
-            sessionStorage.setItem(key, '1')
-            void logActivity('login', 'Signed in with email', newSession.user.email ?? undefined)
-          }
+        const key = `login-logged-${newSession.user.id}`
+        if (!sessionStorage.getItem(key)) {
+          sessionStorage.setItem(key, '1')
+          void logActivity('login', 'Signed in with email', newSession.user.email ?? undefined)
         }
       }
     })

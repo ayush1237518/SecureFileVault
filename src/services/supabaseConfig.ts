@@ -48,20 +48,6 @@ export function mapSupabaseError(error: unknown): string {
     return 'Too many auth emails were sent. Wait 1 hour or see supabase/AUTH_SETUP.md.'
   }
 
-  if (
-    lower.includes('connection refused') ||
-    lower.includes('err_connection_refused') ||
-    lower.includes('networkerror')
-  ) {
-    const onLocal =
-      typeof window !== 'undefined' &&
-      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    if (onLocal) {
-      return 'Cannot reach the app server. Run npm run dev and open http://localhost:5173. Keep the terminal running during Google/GitHub sign-in.'
-    }
-    return 'Sign-in redirected to the wrong URL. In Supabase → Authentication → URL Configuration, set Site URL to https://filesecure1.netlify.app and add https://filesecure1.netlify.app/auth/callback under Redirect URLs, then redeploy Netlify.'
-  }
-
   if (lower.includes('failed to fetch')) {
     if (!isSupabaseConfigured()) {
       return 'Supabase is not configured. Add your project URL and anon key to the .env file, then restart the dev server.'
@@ -69,13 +55,8 @@ export function mapSupabaseError(error: unknown): string {
     return 'Cannot reach Supabase. Check your URL/key in .env, internet connection, and that the project is not paused.'
   }
 
-  if (lower.includes('provider') && (lower.includes('not enabled') || lower.includes('disabled'))) {
-    return 'This sign-in provider is not enabled in Supabase. Enable Google or GitHub under Authentication → Providers.'
-  }
-  if (lower.includes('redirect') && lower.includes('url')) {
-    const origin =
-      typeof window !== 'undefined' ? window.location.origin : 'https://filesecure1.netlify.app'
-    return `Redirect URL not allowed. In Supabase → Authentication → URL Configuration, add: ${origin}/auth/callback`
+  if (lower.includes('invalid login credentials') || lower.includes('invalid email or password')) {
+    return 'Invalid email or password.'
   }
 
   return message
