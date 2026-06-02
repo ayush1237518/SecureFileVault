@@ -53,7 +53,13 @@ export function mapSupabaseError(error: unknown): string {
     lower.includes('err_connection_refused') ||
     lower.includes('networkerror')
   ) {
-    return 'Cannot reach the app server. Run npm run dev and open http://localhost:5173 (not a file:// link). Keep the terminal running during Google/GitHub sign-in.'
+    const onLocal =
+      typeof window !== 'undefined' &&
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    if (onLocal) {
+      return 'Cannot reach the app server. Run npm run dev and open http://localhost:5173. Keep the terminal running during Google/GitHub sign-in.'
+    }
+    return 'Sign-in redirected to the wrong URL. In Supabase → Authentication → URL Configuration, set Site URL to https://filesecure1.netlify.app and add https://filesecure1.netlify.app/auth/callback under Redirect URLs, then redeploy Netlify.'
   }
 
   if (lower.includes('failed to fetch')) {

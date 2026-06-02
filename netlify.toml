@@ -2,7 +2,11 @@
   command = "npm run build"
   publish = "dist"
 
-# SPA: OAuth callback /auth/callback must serve index.html
+[build.environment]
+  # Prevent OAuth redirect to localhost when this was copied from local .env
+  VITE_APP_URL = ""
+
+# SPA: /auth/callback must serve index.html for OAuth PKCE
 [[redirects]]
   from = "/*"
   to = "/index.html"

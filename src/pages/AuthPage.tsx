@@ -9,7 +9,6 @@ import { Container } from '../components/ui/Container'
 import { LoadingScreen } from '../components/ui/LoadingScreen'
 import { Logo } from '../components/ui/Logo'
 import { OAuthButtons } from '../components/OAuthButtons'
-import { getAppOrigin, isOAuthOriginMismatch } from '../services/appUrl'
 
 export function AuthPage() {
   const { user, loading, connectionError } = useAuth()
@@ -117,18 +116,6 @@ export function AuthPage() {
                 role="alert"
               >
                 {connectionError}
-              </div>
-            )}
-
-            {isOAuthOriginMismatch() && (
-              <div
-                className="mb-4 rounded-xl border border-amber-500/30 bg-amber-950/30 px-4 py-3 text-sm text-amber-100"
-                role="alert"
-              >
-                Google/GitHub sign-in redirects to{' '}
-                <code className="rounded bg-white/10 px-1">{getAppOrigin()}</code>. Open that URL
-                instead of {window.location.origin}, or change <code className="rounded bg-white/10 px-1">VITE_APP_URL</code> in{' '}
-                <code className="rounded bg-white/10 px-1">.env</code>.
               </div>
             )}
 

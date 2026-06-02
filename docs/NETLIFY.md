@@ -17,9 +17,18 @@ Do **not** set `VITE_APP_URL` to `http://localhost:5173` on Netlify. The app use
 
 **Authentication → URL Configuration**
 
-- **Site URL:** `https://filesecure1.netlify.app`
-- **Redirect URLs:** add  
-  `https://filesecure1.netlify.app/auth/callback`
+This is the most common cause of **“localhost refused to connect”** on Netlify.
+
+1. Open [Supabase Dashboard](https://supabase.com/dashboard) → your project → **Authentication** → **URL Configuration**.
+2. Set **Site URL** to exactly:
+
+   `https://filesecure1.netlify.app`
+
+   (If it still says `http://localhost:5173`, Google/GitHub will send users to localhost after sign-in.)
+
+3. Under **Redirect URLs**, add (keep local ones if you develop locally):
+
+   `https://filesecure1.netlify.app/auth/callback`
 
 Keep local URLs if you still develop locally:
 

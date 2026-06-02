@@ -1,24 +1,43 @@
 import type { Provider } from '@supabase/supabase-js'
-import { getOAuthCallbackUrl } from './appUrl'
 import { getSupabase } from './supabaseClient'
 
-/** Where Supabase redirects after Google / GitHub sign-in. */
+/** Runtime callback URL — must match Supabase → Authentication → Redirect URLs. */
 export function getOAuthRedirectUrl(): string {
-  return getOAuthCallbackUrl()
+  if (typeof window === 'undefined') {
+    return 'https://filesecure1.netlify.app/auth/callback'
+  }
+  return `${window.location.origin}/auth/callback`
+}
+
+/** Ensure Supabase authorize URL returns to this site, not localhost from dashboard defaults. */
+function fixAuthorizeRedirectUrl(authorizeUrl: string, redirectTo: string): string {
+  try {
+    const url = new URL(authorizeUrl)
+    if (url.searchParams.has('redirect_to')) {
+      url.searchParams.set('redirect_to', redirectTo)
+    }
+    return url.toString()
+  } catch {
+    return authorizeUrl
+  }
 }
 
 export async function signInWithOAuthProvider(provider: Provider) {
+  const redirectTo = getOAuthRedirectUrl()
+
   const { data, error } = await getSupabase().auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: getOAuthRedirectUrl(),
-      skipBrowserRedirect: false,
+      redirectTo,
+      skipBrowserRedirect: true,
     },
   })
   if (error) throw error
-  if (data?.url) {
-    window.location.assign(data.url)
+  if (!data?.url) {
+    throw new Error('No OAuth URL returned. Enable Google/GitHub in Supabase → Authentication → Providers.')
   }
+
+  window.location.assign(fixAuthorizeRedirectUrl(data.url, redirectTo))
 }
 
 /** Complete PKCE OAuth when returning from Google / GitHub. */
@@ -38,8 +57,12 @@ export async function completeOAuthCallback(): Promise<{ error: Error | null }> 
     return { error: null }
   }
 
-  const { error } = await getSupabase().auth.getSession()
-  return { error: error ?? null }
+  const { data, error } = await getSupabase().auth.getSession()
+  if (error) return { error }
+  if (!data.session) {
+    return { error: new Error('No session after sign-in. Check redirect URLs in Supabase.') }
+  }
+  return { error: null }
 }
 
 /** Read OAuth error params Supabase may append to the callback URL. */

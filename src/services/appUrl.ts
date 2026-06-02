@@ -1,48 +1,24 @@
-const PRODUCTION_SITE = 'https://filesecure1.netlify.app'
-
-function normalizeOrigin(url: string): string {
-  return url.trim().replace(/\/$/, '')
-}
-
-/** Dev-only pin from `.env` (e.g. force localhost when opened via LAN IP). Ignored in production builds. */
-function getDevOverrideOrigin(): string | null {
-  if (!import.meta.env.DEV) return null
-  const override = normalizeOrigin(import.meta.env.VITE_APP_URL ?? '')
-  return override || null
-}
+export const PRODUCTION_SITE = 'https://filesecure1.netlify.app'
 
 /**
- * App origin for OAuth redirects — must match Supabase → Authentication → URL Configuration.
- * In production, always uses the live site URL (never localhost from `.env`).
+ * OAuth redirect origin — always the page the user is on (never a baked-in localhost from `.env`).
  */
 export function getAppOrigin(): string {
-  const devOverride = getDevOverrideOrigin()
   if (typeof window !== 'undefined' && window.location?.origin) {
-    return devOverride ?? window.location.origin
+    return window.location.origin
   }
-  if (import.meta.env.PROD) {
-    const prodEnv = normalizeOrigin(import.meta.env.VITE_APP_URL ?? '')
-    if (prodEnv && !prodEnv.includes('localhost') && !prodEnv.includes('127.0.0.1')) {
-      return prodEnv
-    }
-    return PRODUCTION_SITE
-  }
-  return devOverride ?? 'http://localhost:5173'
+  return import.meta.env.PROD ? PRODUCTION_SITE : 'http://localhost:5173'
 }
 
 export function getOAuthCallbackUrl(): string {
   return `${getAppOrigin()}/auth/callback`
 }
 
-/** True when dev `.env` pins a different origin than the browser (local misconfiguration). */
+/** @deprecated Dev-only mismatch check removed — OAuth always uses window.location.origin. */
 export function isOAuthOriginMismatch(): boolean {
-  if (!import.meta.env.DEV || typeof window === 'undefined') return false
-  const override = getDevOverrideOrigin()
-  if (!override) return false
-  return window.location.origin !== override
+  return false
 }
 
-/** Shown in auth errors / setup hints for this deployment. */
 export function getProductionSiteUrl(): string {
   return PRODUCTION_SITE
 }
