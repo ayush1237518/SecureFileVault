@@ -7,7 +7,7 @@ export function getOAuthRedirectUrl(): string {
 }
 
 export async function signInWithOAuthProvider(provider: Provider) {
-  const { error } = await getSupabase().auth.signInWithOAuth({
+  const { data, error } = await getSupabase().auth.signInWithOAuth({
     provider,
     options: {
       redirectTo: getOAuthRedirectUrl(),
@@ -15,6 +15,9 @@ export async function signInWithOAuthProvider(provider: Provider) {
     },
   })
   if (error) throw error
+  if (data?.url) {
+    window.location.assign(data.url)
+  }
 }
 
 /** Read OAuth error params Supabase may append to the callback URL. */

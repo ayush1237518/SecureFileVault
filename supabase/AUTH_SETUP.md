@@ -66,6 +66,10 @@ http://192.168.1.12:5173/auth/callback
 
 Google/GitHub create an account automatically on first sign-in (same as sign-up).
 
+## Activity log
+
+Run `supabase/activity.sql` in the SQL Editor (included at the end of `schema.sql` for new installs). This powers the **Activity** tab on the dashboard.
+
 ## Troubleshooting
 
 | Problem | Fix |

@@ -3,6 +3,7 @@ import { getSupabase } from '../services/supabaseClient'
 import { mapSupabaseError } from '../services/supabaseConfig'
 import type { VaultFile } from '../types/file'
 import { encryptFile, decryptFile } from '../utils/encryption'
+import { logActivity } from '../services/activityLog'
 
 const BUCKET = 'vault-files'
 export const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10 MB
@@ -67,6 +68,7 @@ export function useFiles(userId: string | undefined) {
 
     onProgress?.(100)
     await fetchFiles()
+    void logActivity('upload', `Uploaded ${file.name}`, `${file.size} bytes`)
   }
 
   const downloadFile = async (record: VaultFile, passphrase: string) => {
@@ -83,6 +85,7 @@ export function useFiles(userId: string | undefined) {
     a.download = record.file_name
     a.click()
     URL.revokeObjectURL(url)
+    void logActivity('download', `Downloaded ${record.file_name}`)
   }
 
   const deleteFile = async (record: VaultFile) => {
@@ -95,6 +98,7 @@ export function useFiles(userId: string | undefined) {
     if (dbError) throw new Error(mapSupabaseError(dbError))
 
     setFiles((prev) => prev.filter((f) => f.id !== record.id))
+    void logActivity('delete', `Deleted ${record.file_name}`)
   }
 
   return { files, loading, uploadFile, downloadFile, deleteFile, refresh: fetchFiles }

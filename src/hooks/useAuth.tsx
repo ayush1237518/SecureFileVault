@@ -10,6 +10,8 @@ import {
 import type { Session, User } from '@supabase/supabase-js'
 import { getSupabase } from '../services/supabaseClient'
 import { mapSupabaseError } from '../services/supabaseConfig'
+import { markInitialSessionLoadStarted } from '../services/authInit'
+import { logActivity } from '../services/activityLog'
 
 const SESSION_TIMEOUT_MS = 12_000
 
@@ -47,31 +49,61 @@ export function AuthProvider({ children }: PropsWithChildren) {
       if (mounted) setLoading(false)
     }
 
-    getSupabase()
-      .auth.getSession()
-      .then(({ data, error }) => {
-        if (!mounted) return
-        if (error) {
-          console.error(mapSupabaseError(error))
-          setConnectionError(mapSupabaseError(error))
+    if (markInitialSessionLoadStarted()) {
+      getSupabase()
+        .auth.getSession()
+        .then(({ data, error }) => {
+          if (!mounted) return
+          if (error) {
+            console.error(mapSupabaseError(error))
+            setConnectionError(mapSupabaseError(error))
+            setSession(null)
+            return
+          }
+          setConnectionError(null)
+          setSession(data.session ?? null)
+        })
+        .catch((err) => {
+          if (!mounted) return
+          const message = mapSupabaseError(err)
+          console.error(message)
+          setConnectionError(message)
           setSession(null)
-          return
-        }
-        setConnectionError(null)
-        setSession(data.session ?? null)
-      })
-      .catch((err) => {
-        if (!mounted) return
-        const message = mapSupabaseError(err)
-        console.error(message)
-        setConnectionError(message)
-        setSession(null)
-      })
-      .finally(finishLoading)
+        })
+        .finally(finishLoading)
+    } else {
+      getSupabase()
+        .auth.getSession()
+        .then(({ data }) => {
+          if (!mounted) return
+          setSession(data.session ?? null)
+        })
+        .finally(finishLoading)
+    }
 
-    const { data: sub } = getSupabase().auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession ?? null)
+    const { data: sub } = getSupabase().auth.onAuthStateChange((event, newSession) => {
       setConnectionError(null)
+
+      if (event === 'SIGNED_OUT') {
+        setSession((prev) => {
+          if (prev?.user?.id) sessionStorage.removeItem(`login-logged-${prev.user.id}`)
+          return null
+        })
+        return
+      }
+
+      setSession(newSession ?? null)
+
+      if (event === 'SIGNED_IN' && newSession?.user) {
+        const provider = newSession.user.app_metadata?.provider
+        if (provider === 'email' || !provider) {
+          const key = `login-logged-${newSession.user.id}`
+          if (!sessionStorage.getItem(key)) {
+            sessionStorage.setItem(key, '1')
+            void logActivity('login', 'Signed in with email', newSession.user.email ?? undefined)
+          }
+        }
+      }
     })
 
     return () => {
