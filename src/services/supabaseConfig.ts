@@ -67,7 +67,9 @@ export function mapSupabaseError(error: unknown): string {
     return 'This sign-in provider is not enabled in Supabase. Enable Google or GitHub under Authentication → Providers.'
   }
   if (lower.includes('redirect') && lower.includes('url')) {
-    return 'Redirect URL not allowed. Add your app URL (e.g. http://localhost:5173/auth/callback) in Supabase → Authentication → URL Configuration.'
+    const origin =
+      typeof window !== 'undefined' ? window.location.origin : 'https://filesecure1.netlify.app'
+    return `Redirect URL not allowed. In Supabase → Authentication → URL Configuration, add: ${origin}/auth/callback`
   }
 
   return message

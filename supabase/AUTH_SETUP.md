@@ -20,7 +20,16 @@ http://localhost:5173/auth/callback
 http://127.0.0.1:5173/auth/callback
 ```
 
-For production, also add:
+For **Netlify production** (`https://filesecure1.netlify.app`), also set:
+
+- **Site URL:** `https://filesecure1.netlify.app`
+- **Redirect URLs:**
+
+```
+https://filesecure1.netlify.app/auth/callback
+```
+
+For other production domains:
 
 ```
 https://your-domain.com/auth/callback
@@ -48,7 +57,7 @@ http://192.168.1.12:5173/auth/callback
 ## GitHub
 
 1. GitHub → **Settings** → **Developer settings** → **OAuth Apps** → **New OAuth App**  
-2. **Homepage URL**: `http://localhost:5173` (or your production URL)  
+2. **Homepage URL**: `https://filesecure1.netlify.app` (and/or `http://localhost:5173` for local dev)  
 3. **Authorization callback URL** — same Supabase callback:
 
    ```
@@ -80,3 +89,5 @@ Run `supabase/activity.sql` in the SQL Editor (included at the end of `schema.sq
 | Stuck after Google/GitHub | Confirm **Site URL** matches how you open the app |
 | `localhost refused to connect` | Run `npm run dev`, keep it open during sign-in, open **http://localhost:5173** (not `index.html`). Set `VITE_APP_URL=http://localhost:5173` in `.env`. Add both redirect URLs above in Supabase. |
 | OAuth works on wrong port | Vite uses `strictPort: true` on **5173** — free that port or stop the other app using it |
+| Works locally, not on Netlify | Add `https://filesecure1.netlify.app/auth/callback` in Supabase redirect URLs. In Netlify → Environment variables, set only `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` — **do not** set `VITE_APP_URL` to localhost. Redeploy after code updates. |
+| Netlify shows “redirects to localhost” | Remove `VITE_APP_URL=http://localhost:5173` from Netlify env vars and redeploy |

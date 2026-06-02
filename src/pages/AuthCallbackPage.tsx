@@ -65,9 +65,11 @@ export function AuthCallbackPage() {
     const timeoutId = window.setTimeout(() => {
       if (finishedRef.current) return
       finishedRef.current = true
-      toast.error(
-        'Could not complete sign-in. Run npm run dev, open http://localhost:5173, and add that callback URL in Supabase.',
-      )
+      const hint =
+        window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? 'Run npm run dev, open http://localhost:5173, and add that callback URL in Supabase.'
+          : `Add ${window.location.origin}/auth/callback in Supabase → Authentication → URL Configuration, then try again.`
+      toast.error(`Could not complete sign-in. ${hint}`)
       navigate('/auth', { replace: true })
     }, SIGN_IN_TIMEOUT_MS)
 
