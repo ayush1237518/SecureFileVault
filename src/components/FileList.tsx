@@ -50,7 +50,7 @@ export function FileList({ files, loading, search, onDownload, onDelete }: Props
       {filtered.length === 0 ? (
         <div className="mt-10 flex flex-col items-center text-center">
           <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white/5 ring-1 ring-white/10">
-            <IconFile className="text-zinc-500" />
+            <IconFile className="h-7 w-7 text-zinc-500" />
           </div>
           <p className="mt-4 text-sm text-zinc-500">
             {search ? 'No files match your search.' : 'No files yet. Upload your first encrypted file.'}
@@ -72,7 +72,7 @@ export function FileList({ files, loading, search, onDownload, onDelete }: Props
                 <tr key={file.id} className="border-b border-white/5 last:border-0">
                   <td className="py-3 pr-4">
                     <div className="flex items-center gap-2 font-medium text-zinc-100">
-                      <IconFile className="h-4 w-4 shrink-0 text-violet-400/70" />
+                      <IconFile className="text-violet-400/70" />
                       <span className="truncate">{file.file_name}</span>
                     </div>
                   </td>

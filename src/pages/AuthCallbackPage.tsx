@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { getSupabase } from '../services/supabaseClient'
-import { getOAuthCallbackError } from '../services/oauth'
+import { completeOAuthCallback } from '../services/oauth'
+import { mapSupabaseError } from '../services/supabaseConfig'
 import { useAuth } from '../hooks/useAuth'
 import { logActivity } from '../services/activityLog'
 import { LoadingScreen } from '../components/ui/LoadingScreen'
@@ -14,30 +14,29 @@ export function AuthCallbackPage() {
   const { user, loading } = useAuth()
   const finishedRef = useRef(false)
   const loginLoggedRef = useRef(false)
+  const [exchangeDone, setExchangeDone] = useState(false)
 
   useEffect(() => {
-    const oauthError = getOAuthCallbackError()
-    if (oauthError) {
-      toast.error(oauthError)
-      navigate('/auth', { replace: true })
-      return
+    let cancelled = false
+
+    void completeOAuthCallback().then(({ error }) => {
+      if (cancelled) return
+      if (error) {
+        finishedRef.current = true
+        toast.error(mapSupabaseError(error))
+        navigate('/auth', { replace: true })
+        return
+      }
+      setExchangeDone(true)
+    })
+
+    return () => {
+      cancelled = true
     }
-
-    const supabase = getSupabase()
-    void supabase.auth.getSession()
-
-    const timeoutId = window.setTimeout(() => {
-      if (finishedRef.current) return
-      finishedRef.current = true
-      toast.error('Sign-in timed out. Add your callback URL in Supabase → Authentication → URL Configuration.')
-      navigate('/auth', { replace: true })
-    }, SIGN_IN_TIMEOUT_MS)
-
-    return () => window.clearTimeout(timeoutId)
   }, [navigate])
 
   useEffect(() => {
-    if (loading || !user || finishedRef.current) return
+    if (!exchangeDone || loading || !user || finishedRef.current) return
 
     finishedRef.current = true
 
@@ -58,23 +57,22 @@ export function AuthCallbackPage() {
 
     toast.success('Signed in successfully')
     navigate('/dashboard', { replace: true })
-  }, [loading, user, navigate])
+  }, [exchangeDone, loading, user, navigate])
 
   useEffect(() => {
-    if (loading || user) return
+    if (!exchangeDone || loading || user) return
 
     const timeoutId = window.setTimeout(() => {
       if (finishedRef.current) return
-      const oauthError = getOAuthCallbackError()
-      if (oauthError) return
-
       finishedRef.current = true
-      toast.error('Could not complete sign-in. Check OAuth redirect URLs in Supabase.')
+      toast.error(
+        'Could not complete sign-in. Run npm run dev, open http://localhost:5173, and add that callback URL in Supabase.',
+      )
       navigate('/auth', { replace: true })
     }, SIGN_IN_TIMEOUT_MS)
 
     return () => window.clearTimeout(timeoutId)
-  }, [loading, user, navigate])
+  }, [exchangeDone, loading, user, navigate])
 
   return <LoadingScreen label="Completing sign in…" />
 }

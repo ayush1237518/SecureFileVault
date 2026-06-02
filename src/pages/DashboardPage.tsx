@@ -51,13 +51,14 @@ export function DashboardPage() {
               </p>
             </div>
             <div className="relative w-full sm:max-w-sm">
-              <IconSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
+              <IconSearch className="input-search-icon" aria-hidden />
               <input
                 type="search"
-                className="input pl-10"
+                className="input-search"
                 placeholder="Search files…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                aria-label="Search files"
               />
             </div>
           </div>

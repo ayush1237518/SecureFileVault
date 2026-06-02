@@ -7,7 +7,8 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
-    strictPort: false,
+    // Keep OAuth redirect URL on 5173 (Supabase allows http://localhost:5173/auth/callback).
+    strictPort: true,
     open: true,
   },
   preview: {

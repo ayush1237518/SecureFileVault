@@ -78,3 +78,5 @@ Run `supabase/activity.sql` in the SQL Editor (included at the end of `schema.sq
 | Provider not enabled | Enable provider in Supabase and save credentials |
 | Works on PC, not phone | Add `http://YOUR_LAN_IP:5173/auth/callback` to Redirect URLs |
 | Stuck after Google/GitHub | Confirm **Site URL** matches how you open the app |
+| `localhost refused to connect` | Run `npm run dev`, keep it open during sign-in, open **http://localhost:5173** (not `index.html`). Set `VITE_APP_URL=http://localhost:5173` in `.env`. Add both redirect URLs above in Supabase. |
+| OAuth works on wrong port | Vite uses `strictPort: true` on **5173** — free that port or stop the other app using it |

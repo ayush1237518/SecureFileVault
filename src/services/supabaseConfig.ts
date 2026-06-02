@@ -42,19 +42,27 @@ export function mapSupabaseError(error: unknown): string {
   }
 
   const message = error instanceof Error ? error.message : String(error)
+  const lower = message.toLowerCase()
 
   if (isEmailRateLimitError(message)) {
     return 'Too many auth emails were sent. Wait 1 hour or see supabase/AUTH_SETUP.md.'
   }
 
-  if (message.toLowerCase().includes('failed to fetch')) {
+  if (
+    lower.includes('connection refused') ||
+    lower.includes('err_connection_refused') ||
+    lower.includes('networkerror')
+  ) {
+    return 'Cannot reach the app server. Run npm run dev and open http://localhost:5173 (not a file:// link). Keep the terminal running during Google/GitHub sign-in.'
+  }
+
+  if (lower.includes('failed to fetch')) {
     if (!isSupabaseConfigured()) {
       return 'Supabase is not configured. Add your project URL and anon key to the .env file, then restart the dev server.'
     }
     return 'Cannot reach Supabase. Check your URL/key in .env, internet connection, and that the project is not paused.'
   }
 
-  const lower = message.toLowerCase()
   if (lower.includes('provider') && (lower.includes('not enabled') || lower.includes('disabled'))) {
     return 'This sign-in provider is not enabled in Supabase. Enable Google or GitHub under Authentication → Providers.'
   }
