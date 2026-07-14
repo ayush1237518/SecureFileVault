@@ -1,5 +1,6 @@
 # Secure File Vault
 
+
 A secure file storage web application that encrypts files in the browser before upload (AES), with Supabase for auth and storage.
 
 ## How it works
@@ -24,4 +25,3 @@ A secure file storage web application that encrypts files in the browser before 
 - AES encryption (CryptoJS)
 
 
-Live Demo:https://filesecure1.netlify.app/
