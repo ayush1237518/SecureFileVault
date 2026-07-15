@@ -24,4 +24,4 @@ A secure file storage web application that encrypts files in the browser before 
 - Supabase (Auth + Storage)
 - AES encryption (CryptoJS)
 
-
+  Live Demo = filesecure1.netlify.app/
