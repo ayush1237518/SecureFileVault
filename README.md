@@ -23,5 +23,7 @@ A secure file storage web application that encrypts files in the browser before 
 - React, TypeScript, Vite, Tailwind CSS
 - Supabase (Auth + Storage)
 - AES encryption (CryptoJS)
+  
+---
 
-  Live Demo = filesecure1.netlify.app/
+  Live Demo = https://filesecure1.netlify.app/auth
